@@ -64,9 +64,7 @@
         "timeout": "PT30M",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D",
-        "dependsOn": [
-          "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', variables('cosmosDB').accountName, variables('cosmosDB').name, variables('cosmosDB').container.name)]"
-        ]
+        "dependsOn": []
       }
     }
   ]
