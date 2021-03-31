@@ -60,7 +60,7 @@
             "value": "[parameters('AppOnlyPermissions')]"
           }
         ],
-        "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/AzureADApplicationwithARM/CreateAzureADApplication.ps1",
+        "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/AzureADApplicationwithARM/CreateAzureADApplication.ps1",
         "timeout": "PT30M",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D",
