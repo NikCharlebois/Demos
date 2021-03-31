@@ -2,45 +2,36 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "accountName": {
-      "type": "string",
-      "defaultValue": "sql-cosmos",
-      "metadata": {
-        "description": "Cosmos DB account name, max length 44 characters"
-      }
-    },
-    "adminGroupId": {
+    "ApplicationName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "ID of the group which will be granted access to each item created."
+        "description": "Name of the Azure Active Directory to create."
+      }
+    },
+    "IdentifierUris": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Comma separated list of identifier Uris for our Azure Active Directory Application."
+      }
+    },
+    "DelegatedPermissions": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Comma separated list of delegated permissions' names for our Azure Active Directory Application."
+      }
+    },
+    "AppOnlyPermissions": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Comma separated list of application only permissions' names for our Azure Active Directory Application."
       }
     }
   },
-  "variables": {
-    "storageAccount": {
-      "name": "[concat('mgcstorestorage', substring(uniqueString(resourceGroup().name),0,7))]",
-      "blob": {
-        "name": "[concat('mgcstoreblob', substring(uniqueString(resourceGroup().name),0,7))]"
-      }
-    },
-    "appService": {
-      "name": "[concat('ASP-FHLSpring21-af0d', substring(uniqueString(resourceGroup().name),0,7))]"
-    },
-    "functionApp": {
-      "name": "[concat('functionApp', substring(uniqueString(resourceGroup().name),0,7))]"
-    },
-    "cosmosDB": {
-      "name": "[concat('mgcstore', substring(uniqueString(resourceGroup().name),0,7))]",
-      "accountName": "[toLower(parameters('accountName'))]",
-      "container":{
-        "name": "mgccontainer"
-      }
-    },
-    "appInsights": {
-      "name": "[concat('mgcInsights', substring(uniqueString(resourceGroup().name),0,7))]"
-    }
-  },
+  "variables": {},
   "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
@@ -53,20 +44,20 @@
         "azPowerShellVersion": "3.0",
         "environmentVariables": [
           {
-            "name": "MasterKey",
-            "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDB').accountName), '2021-01-15').primaryMasterKey]"
+            "name": "ApplicationName",
+            "value": "[parameters('ApplicationName')]"
           },
           {
-            "name": "EndpointURI",
-            "value": "[concat('https://', variables('cosmosDB').accountName, '.documents.azure.com:443/')]"
+            "name": "IdentifierUris",
+            "value": "[parameters('IdentifierUris')]"
           },
           {
-            "name": "DatabaseID",
-            "value": "[variables('cosmosDB').name]"
+            "name": "DelegatedPermissions",
+            "value": "[parameters('DelegatedPermissions')]"
           },
           {
-            "name": "ContainerID",
-            "value": "[variables('cosmosDB').container.name]"
+            "name": "AppOnlyPermissions",
+            "value": "[parameters('AppOnlyPermissions')]"
           }
         ],
         "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/AzureADApplicationwithARM/CreateAzureADApplication.ps1",
