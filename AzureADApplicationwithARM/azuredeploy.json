@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "accountName": {
+      "type": "string",
+      "defaultValue": "sql-cosmos",
+      "metadata": {
+        "description": "Cosmos DB account name, max length 44 characters"
+      }
+    },
+    "adminGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "ID of the group which will be granted access to each item created."
+      }
+    }
+  },
+  "variables": {
+    "storageAccount": {
+      "name": "[concat('mgcstorestorage', substring(uniqueString(resourceGroup().name),0,7))]",
+      "blob": {
+        "name": "[concat('mgcstoreblob', substring(uniqueString(resourceGroup().name),0,7))]"
+      }
+    },
+    "appService": {
+      "name": "[concat('ASP-FHLSpring21-af0d', substring(uniqueString(resourceGroup().name),0,7))]"
+    },
+    "functionApp": {
+      "name": "[concat('functionApp', substring(uniqueString(resourceGroup().name),0,7))]"
+    },
+    "cosmosDB": {
+      "name": "[concat('mgcstore', substring(uniqueString(resourceGroup().name),0,7))]",
+      "accountName": "[toLower(parameters('accountName'))]",
+      "container":{
+        "name": "mgccontainer"
+      }
+    },
+    "appInsights": {
+      "name": "[concat('mgcInsights', substring(uniqueString(resourceGroup().name),0,7))]"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "DeployAzureADApplication",
+      "location": "[resourceGroup().location]",
+      "kind": "AzurePowerShell",
+      "properties": {
+        "forceUpdateTag": "1",
+        "azPowerShellVersion": "3.0",
+        "environmentVariables": [
+          {
+            "name": "MasterKey",
+            "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDB').accountName), '2021-01-15').primaryMasterKey]"
+          },
+          {
+            "name": "EndpointURI",
+            "value": "[concat('https://', variables('cosmosDB').accountName, '.documents.azure.com:443/')]"
+          },
+          {
+            "name": "DatabaseID",
+            "value": "[variables('cosmosDB').name]"
+          },
+          {
+            "name": "ContainerID",
+            "value": "[variables('cosmosDB').container.name]"
+          }
+        ],
+        "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/AzureADApplicationwithARM/CreateAzureADApplication.ps1",
+        "timeout": "PT30M",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D",
+        "dependsOn": [
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', variables('cosmosDB').accountName, variables('cosmosDB').name, variables('cosmosDB').container.name)]"
+        ]
+      }
+    }
+  ]
+}
