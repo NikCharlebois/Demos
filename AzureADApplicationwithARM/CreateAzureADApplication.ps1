@@ -16,12 +16,12 @@ param(
     $AppOnlyPermissions
 )
 
-$AADApp = Get-AzureADApplication -Filter "DisplayName eq '$($ApplicationName)'"
+$AADApp = Get-AzADApplication -DisplayName $ApplicationName
 
 if ($null -eq $AADApp)
 {
     Write-Output "Couldn't find and existing Azure Active Directory Application named {$DisplayName}"
-    $AADApp = New-AzureADApplication -DisplayName $ApplicationName -IdentifierUris $IdentifierUris
+    $AADApp = New-AzADApplication -DisplayName $ApplicationName -IdentifierUris $IdentifierUris
 }
 else
 {
