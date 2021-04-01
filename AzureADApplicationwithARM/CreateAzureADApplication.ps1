@@ -13,5 +13,5 @@ else
 Install-Module Microsoft.Graph.Applications -Force -Confirm:$false
 Import-Module Microsoft.Graph.Applications -Force
 
-New-MgApplication -DisplayName ${ENV:DisplayName} `
+New-MgApplication -DisplayName ${ENV:ApplicationName} `
     -IdentifierUris ${ENV:IdentifierUris}
