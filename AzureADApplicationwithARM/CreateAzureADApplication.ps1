@@ -1,14 +1,9 @@
-param(
-    [string]
-    $ApplicationName,
+<#Write-Host "Installing {Microsoft.Graph.Applications}..."
+Install-Module Microsoft.Graph.Applications -Force -Confirm:$false
 
-    [string]
-    $IdentifierUris,
+Write-Host "Importing {Microsoft.Graph.Applications}..."
+Import-Module Microsoft.Graph.Applications -Force
 
-    [string]
-    $DelegatedPermissions,
-
-    [string]
-    $AppOnlyPermissions
-)
-Add-Type -AssemblyName System.Web
+Write-Host "Creating new Application {${ENV:ApplicationName}} with URIs {${ENV:IdentifierUris}}..."
+$AADApp = New-MgApplication -DisplayName ${ENV:ApplicationName} `
+                            -IdentifierUris ${ENV:IdentifierUris}#>
