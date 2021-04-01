@@ -10,4 +10,4 @@ else
     Write-Output "An existing Azure Active Directory Application named {${ENV:ApplicationName}} already exists" 
 }#>
 
-Install-Module Microsoft.Graph.Application -Force -Confirm:$false
+Install-Module Microsoft.Graph.Applications -Force -Confirm:$false
