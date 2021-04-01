@@ -1,4 +1,5 @@
 Connect-AzAccount -Identity
+Get-azadApplication
 <#Write-Host "Installing {Microsoft.Graph.Applications}..." -NoNewline
 Install-Module Microsoft.Graph.Applications -Force -Confirm:$false | Out-Null
 Write-Host "Done"
