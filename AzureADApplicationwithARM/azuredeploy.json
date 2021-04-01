@@ -2,6 +2,20 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "AdminUserName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Username for an admin account."
+      }
+    },
+    "AdminPassword": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Password of an admin account."
+      }
+    },
     "ApplicationName": {
       "type": "string",
       "defaultValue": "",
@@ -43,6 +57,14 @@
         "forceUpdateTag": "1",
         "azPowerShellVersion": "3.0",
         "environmentVariables": [
+          {
+            "name": "AdminUserName",
+            "value": "[parameters('AdminUserName')]"
+          },
+          {
+            "name": "AdminPassword",
+            "value": "[parameters('AdminPassword')]"
+          },
           {
             "name": "ApplicationName",
             "value": "[parameters('ApplicationName')]"

@@ -1,4 +1,5 @@
-Connect-AzAccount -Identity
+$Creds = New-Object System.Management.Automation.PSCredential (${ENV:AdminUserName}, ${ENV:AdminPassword})
+Connect-AzAccount -Credential $Creds
 Get-azadApplication
 <#Write-Host "Installing {Microsoft.Graph.Applications}..." -NoNewline
 Install-Module Microsoft.Graph.Applications -Force -Confirm:$false | Out-Null
