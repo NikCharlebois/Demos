@@ -1,7 +1,4 @@
-$Creds = New-Object System.Management.Automation.PSCredential (${ENV:AdminUserName}, ${ENV:AdminPassword})
-Connect-AzAccount -Credential $Creds
-Get-azadApplication
-<#Write-Host "Installing {Microsoft.Graph.Applications}..." -NoNewline
+Write-Host "Installing {Microsoft.Graph.Applications}..." -NoNewline
 Install-Module Microsoft.Graph.Applications -Force -Confirm:$false | Out-Null
 Write-Host "Done"
 
@@ -10,6 +7,6 @@ Import-Module Microsoft.Graph.Applications -Force | Out-Null
 Write-Host "Done"
 
 Write-Host "Creating new Application {${ENV:ApplicationName}} with URIs {${ENV:IdentifierUris}}..." -NoNewline
-$AADApp = New-MgApplication -DisplayName ${ENV:ApplicationName} `
-                            -IdentifierUris ${ENV:IdentifierUris}
-Write-Host "Done"#>
+$AADApp = New-AzAdApplication -DisplayName ${ENV:ApplicationName} `
+                              -IdentifierUris ${ENV:IdentifierUris}
+Write-Host "Done"
