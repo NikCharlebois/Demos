@@ -33,5 +33,5 @@ New-MgSubscription -ChangeType "Updated,Deleted" `
                    -NotificationUrl $EventHubUrl `
                    -Resource '/users' `
                    -ClientState 'SecretClientState' `
-                   -ExpirationDateTime (([System.DateTime]::Now).AddMinutes(15))
+                   -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(15))
 Write-Host "Done"

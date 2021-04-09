@@ -165,7 +165,7 @@
             "forceUpdateTag": "1",
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
-            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -EventHubUrl {3}', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId, concat('EventHub:https://', parameters('EventHubNamespace'), '.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid))]",
+            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -EventHubUrl {3}', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId, concat('EventHub:https://', parameters('EventHubNamespace'), 'Valut.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid))]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
