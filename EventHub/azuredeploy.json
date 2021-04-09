@@ -158,19 +158,19 @@
         {
           "type": "Microsoft.Resources/deploymentScripts",
           "apiVersion": "2020-10-01",
-          "name": "DeployAzureADApplication",
+          "name": "SubscribeToNotifications",
           "location": "[resourceGroup().location]",
           "kind": "AzurePowerShell",
           "properties": {
             "forceUpdateTag": "1",
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
-            "arguments": "[format(' -AppID {0} -AppSecret {1} -CertificateThumbprint {2}', parameters('ApplicationId'), parameters('CertificateThumbprint'), subscription().tenantId)]",
+            "arguments": "[format(' -AppID {0} -CertificateThumbprint {1} -TenantId {2}', parameters('ApplicationId'), parameters('CertificateThumbprint'), subscription().tenantId)]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": []
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces', parameters('EventHubNamespace'), parameters('EventHubName'))]"
           }
         }
   ]
