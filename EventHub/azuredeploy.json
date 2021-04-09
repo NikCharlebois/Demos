@@ -2,6 +2,20 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "ApplicationId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "ID of the Azure AD Application to authenticate with."
+      }
+    },
+    "CertificateThumbprint": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Thumbprint of the Azure AD Application to authenticate with."
+      }
+    },
     "GraphChangeTrackingPrincipalId": {
       "type": "string",
       "defaultValue": "",
@@ -141,5 +155,29 @@
                 "value": "[listkeys(resourceId('Microsoft.Eventhub/namespaces/eventhubs/authorizationRules', parameters('EventHubNamespace'), parameters('EventHubName'), 'AllowSendListen'),'2017-04-01').primaryConnectionString]"
             }
         }
+        {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "DeployAzureADApplication",
+      "location": "[resourceGroup().location]",
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('IdentityName'))]": {}
+        }
+      },
+      "kind": "AzurePowerShell",
+      "properties": {
+        "forceUpdateTag": "1",
+        "azPowerShellVersion": "3.0",
+        "environmentVariables": [],
+        "arguments": "[format(' -AppID {0} -AppSecret {1} -CertificateThumbprint {2}', parameters('ApplicationId'), parameters('CertificateThumbprint'), subscription().tenantId)]",
+        "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
+        "timeout": "PT30M",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D",
+        "dependsOn": []
+      }
+    }
   ]
 }
