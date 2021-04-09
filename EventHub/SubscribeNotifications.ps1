@@ -1,7 +1,8 @@
 param(
     [string] [Parameter(Mandatory=$true)] $AppId,
     [string] [Parameter(Mandatory=$true)] $AppSecret,
-    [string] [Parameter(Mandatory=$true)] $TenantId
+    [string] [Parameter(Mandatory=$true)] $TenantId,
+    [string] [Parameter(Mandatory=$true)] $EventHubUrl
 )
 
 Install-Module Microsoft.Graph.Authentication -Force
@@ -18,7 +19,19 @@ $body = @{
     client_id = $AppId
 }
 
+Write-Host "Requesting Access Token for Microsoft Graph..." -NoNewline
 $OAuthReq = Invoke-RestMethod -Uri $url -Method Post -Body $body
 $AccessToken = $OAuthReq.access_token
+Write-Host "Done"
 
-Connect-MgGraph -AccessToken $AccessToken
+Write-Host "Connecting to Microsoft Graph..." -NoNewline
+Connect-MgGraph -AccessToken $AccessToken | Out-Null
+Write-Host "Done"
+
+Write-Host "Creating new Subscription..." -NoNewline
+New-MgSubscription -ChangeType "Updated,Deleted" `
+                   -NotificationUrl $EventHubUrl `
+                   -Resource '/users' `
+                   -ClientState 'SecretClientState' `
+                   -ExpirationDateTime (([System.DateTime]::Now).AddMinutes(15))
+Write-Host "Done"
