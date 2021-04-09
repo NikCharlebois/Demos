@@ -154,7 +154,7 @@
                 "contentType": "text/plaintext",
                 "value": "[listkeys(resourceId('Microsoft.Eventhub/namespaces/eventhubs/authorizationRules', parameters('EventHubNamespace'), parameters('EventHubName'), 'AllowSendListen'),'2017-04-01').primaryConnectionString]"
             }
-        }
+        },
         {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
