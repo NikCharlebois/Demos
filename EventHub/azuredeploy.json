@@ -156,28 +156,28 @@
             }
         },
         {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "name": "DeployAzureADApplication",
-      "location": "[resourceGroup().location]",
-      "identity": {
-        "type": "userAssigned",
-        "userAssignedIdentities": {
-          "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('IdentityName'))]": {}
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "DeployAzureADApplication",
+          "location": "[resourceGroup().location]",
+          "identity": {
+            "type": "userAssigned",
+            "userAssignedIdentities": {
+              "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('IdentityName'))]": {}
+            }
+          },
+          "kind": "AzurePowerShell",
+          "properties": {
+            "forceUpdateTag": "1",
+            "azPowerShellVersion": "3.0",
+            "environmentVariables": [],
+            "arguments": "[format(' -AppID {0} -AppSecret {1} -CertificateThumbprint {2}', parameters('ApplicationId'), parameters('CertificateThumbprint'), subscription().tenantId)]",
+            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
+            "timeout": "PT30M",
+            "cleanupPreference": "OnSuccess",
+            "retentionInterval": "P1D",
+            "dependsOn": []
+          }
         }
-      },
-      "kind": "AzurePowerShell",
-      "properties": {
-        "forceUpdateTag": "1",
-        "azPowerShellVersion": "3.0",
-        "environmentVariables": [],
-        "arguments": "[format(' -AppID {0} -AppSecret {1} -CertificateThumbprint {2}', parameters('ApplicationId'), parameters('CertificateThumbprint'), subscription().tenantId)]",
-        "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
-        "timeout": "PT30M",
-        "cleanupPreference": "OnSuccess",
-        "retentionInterval": "P1D",
-        "dependsOn": []
-      }
-    }
   ]
 }
