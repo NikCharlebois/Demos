@@ -170,7 +170,7 @@
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId(concat('Microsoft.EventHub/namespaces/',parameters('EventHubNamespace')), parameters('EventHubName'))]"
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
           }
         }
   ]
