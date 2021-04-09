@@ -1,6 +1,6 @@
 param(
     [string] [Parameter(Mandatory=$true)] $AppId,
-    [string] [Parameter(Mandatory=$true)] $CertificateThumbprint,
+    [string] [Parameter(Mandatory=$true)] $AppSecret,
     [string] [Parameter(Mandatory=$true)] $TenantId
 )
 
@@ -9,4 +9,16 @@ Import-Module Microsoft.Graph.Authentication -Force
 Install-Module Microsoft.Graph.ChangeNotifications -Force
 Import-Module Microsoft.Graph.ChangeNotifications -Force
 
-Connect-MgGraph @PSBoundParameters
+$url = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
+$body = @{
+    scope = "https://graph.microsoft.com/.default"
+    grant_type = "client_credentials"
+    client_secret = $AppSecret
+    client_info = 1
+    client_id = $AppId
+}
+
+$OAuthReq = Invoke-RestMethod -Uri $url -Method Post -Body $body
+$AccessToken = $OAuthReq.access_token
+
+Connect-MgGraph -AccessToken $AccessToken

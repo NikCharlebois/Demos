@@ -9,11 +9,11 @@
         "description": "ID of the Azure AD Application to authenticate with."
       }
     },
-    "CertificateThumbprint": {
+    "ApplicationSecret": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Thumbprint of the Azure AD Application to authenticate with."
+        "description": "Secret for the Azure AD Application to authenticate with."
       }
     },
     "GraphChangeTrackingPrincipalId": {
@@ -165,7 +165,7 @@
             "forceUpdateTag": "1",
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
-            "arguments": "[format(' -AppID {0} -CertificateThumbprint {1} -TenantId {2}', parameters('ApplicationId'), parameters('CertificateThumbprint'), subscription().tenantId)]",
+            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2}', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId)]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
