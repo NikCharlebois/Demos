@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.2",
+  "contentVersion": "1.0.0.3",
   "parameters": {
     "ApplicationId": {
       "type": "string",
@@ -228,7 +228,7 @@
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
             "arguments": "[format(' -Value {0}', reference('GraphChangeTracking').outputs.PrincipalId)]",
-            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/troubleshooting.ps1",
+            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/Troubleshooting.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
