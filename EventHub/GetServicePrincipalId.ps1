@@ -1,5 +1,6 @@
 param(
     [string] [Parameter(Mandatory=$true)] $AppId,
+    [string] [Parameter(Mandatory=$true)] $AppSecret,
     [string] [Parameter(Mandatory=$true)] $TenantId,
     [string] [Parameter(Mandatory=$true)] $AppToGet
 )
@@ -13,7 +14,7 @@ $url = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
 $body = @{
     scope = "https://graph.microsoft.com/.default"
     grant_type = "client_credentials"
-    client_secret = ${Env:AppSecret}
+    client_secret = $AppSecret
     client_info = 1
     client_id = $AppId
 }
