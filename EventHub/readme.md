@@ -1,4 +1,4 @@
-Deploys and Event Hub, Storage Account and KeyVault in Azure and configures it to receive Graph change tracking notifications.
+Deploys an Event Hub, Storage Account and KeyVault in Azure and configures it to receive Graph change tracking notifications.
 
 **Parameters**
 
