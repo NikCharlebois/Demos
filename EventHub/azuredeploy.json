@@ -137,7 +137,7 @@
               "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
               "[resourceId('Microsoft.Resources/deploymentScript', 'GraphChangeTracking')]"
             ]
-        }
+          }
         },
         {
             "type": "Microsoft.KeyVault/vaults",
