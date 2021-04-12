@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.5",
+  "contentVersion": "1.0.0.6",
   "parameters": {
     "ApplicationId": {
       "type": "string",
@@ -227,7 +227,7 @@
             "forceUpdateTag": "1",
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
-            "arguments": "[format(' -Value {0}', reference('ApplicationStript').outputs.PrincipalId)]",
+            "arguments": "[format(' -Value {0}', reference('ApplicationScript').outputs.PrincipalId)]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/Troubleshooting.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
