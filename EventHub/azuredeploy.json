@@ -108,12 +108,14 @@
             "forceUpdateTag": "1",
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
-            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -AppToGet 0bf30f3b-4a52-48df-9a82-234910c4a086', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId)]",
+            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -AppToGet {3}', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId, '0bf30f3b-4a52-48df-9a82-234910c4a086')]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/GetServicePrincipalId.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
+            "dependsOn": [
+              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
+            ]
           }
         },
         {
@@ -131,8 +133,11 @@
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
-          }
+            "dependsOn": [
+              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
+              "[resourceId('Microsoft.Resources/deploymentScript', 'GraphChangeTracking')]"
+            ]
+        }
         },
         {
             "type": "Microsoft.KeyVault/vaults",

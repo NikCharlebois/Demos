@@ -19,17 +19,10 @@ $body = @{
     client_id = $AppId
 }
 
-Write-Host "Requesting Access Token for Microsoft Graph..." -NoNewline
 $OAuthReq = Invoke-RestMethod -Uri $url -Method Post -Body $body
 $AccessToken = $OAuthReq.access_token
-Write-Host "Done"
-
-Write-Host "Connecting to Microsoft Graph..." -NoNewline
 Connect-MgGraph -AccessToken $AccessToken | Out-Null
-Write-Host "Done"
 
-Write-Host "Retrieving Service Principal with Application ID {$AppToGet}..." -NoNewline
 $application = Get-MgServicePrincipal -All:$true -Filter "AppID eq '$AppToGet'"
 $DeploymentScriptOutputs = @{}
 $DeploymentScriptOutputs['PrincipalId'] = $application.Id
-Write-Host "Done"
