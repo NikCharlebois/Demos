@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.1",
+  "contentVersion": "1.0.0.2",
   "parameters": {
     "ApplicationId": {
       "type": "string",
@@ -211,6 +211,24 @@
             "environmentVariables": [],
             "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -EventHubUrl {3}', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId, concat('EventHub:https://', parameters('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid))]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
+            "timeout": "PT30M",
+            "cleanupPreference": "OnSuccess",
+            "retentionInterval": "P1D",
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
+          }
+        },
+        {
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "Troubleshooting",
+          "location": "[resourceGroup().location]",
+          "kind": "AzurePowerShell",
+          "properties": {
+            "forceUpdateTag": "1",
+            "azPowerShellVersion": "3.0",
+            "environmentVariables": [],
+            "arguments": "[format(' -Value {0}', reference('GraphChangeTracking').outputs.PrincipalId)]",
+            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/troubleshooting.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
