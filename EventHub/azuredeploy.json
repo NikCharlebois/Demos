@@ -221,24 +221,6 @@
             "retentionInterval": "P1D",
             "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
           }
-        },
-        {
-          "type": "Microsoft.Resources/deploymentScripts",
-          "apiVersion": "2020-10-01",
-          "name": "Troubleshooting",
-          "location": "[resourceGroup().location]",
-          "kind": "AzurePowerShell",
-          "properties": {
-            "forceUpdateTag": "1",
-            "azPowerShellVersion": "3.0",
-            "environmentVariables": [],
-            "arguments": "[format(' -Value {0}', reference('ApplicationScript').outputs.PrincipalId)]",
-            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/Troubleshooting.ps1",
-            "timeout": "PT30M",
-            "cleanupPreference": "OnSuccess",
-            "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.Resources/deploymentScripts', 'ApplicationScript')]"
-          }
         }
   ]
 }
