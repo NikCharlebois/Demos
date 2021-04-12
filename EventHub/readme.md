@@ -14,15 +14,6 @@ Deploys and Event Hub, Storage Account and KeyVault in Azure and configures it t
 
   Represents the secret to use to authenticate using the Azure AD Application specified by the Application ID.
 
-* GraphChangeTrackingPrincipalID
-
-  Represents the Service Principal ID of the Microsoft Graph Change Tracking app. This can be obtained by running the following lines of PowerShell:
-
-  ```PowerShell PowerShell Code
-   Connect-AzureAD
-   Get-AzureADServicePrincipal -All:$true | Where-Object -FilterScript {$_.AppId -eq '0bf30f3b-4a52-48df-9a82-234910c4a086'} | Select-Object ObjectID
-  ```
-
 * EventHubNamespace
 
   Represents the name of the Event Hub Namespace to be created;
