@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.4",
+  "contentVersion": "1.0.0.5",
   "parameters": {
     "ApplicationId": {
       "type": "string",
@@ -148,7 +148,7 @@
                 "accessPolicies": [
                     {
                         "tenantId": "[subscription().tenantId]",
-                        "objectId": "[reference('GraphChangeTracking').outputs.text]",
+                        "objectId": "[reference('GraphChangeTracking').outputs.PrincipalId]",
                         "permissions": {
                             "keys": [],
                             "secrets": [
@@ -159,7 +159,7 @@
                     },
                     {
                         "tenantId": "[subscription().tenantId]",
-                        "objectId": "[reference('ApplicationScript').outputs.text]",
+                        "objectId": "[reference('ApplicationScript').outputs.PrincipalId]",
                         "permissions": {
                             "keys": [],
                             "secrets": [
@@ -227,19 +227,13 @@
             "forceUpdateTag": "1",
             "azPowerShellVersion": "3.0",
             "environmentVariables": [],
-            "arguments": "[format(' -Value {0}', reference('GraphChangeTracking').outputs.text)]",
+            "arguments": "[format(' -Value {0}', reference('ApplicationStript').outputs.PrincipalId)]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/Troubleshooting.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.Resources/deploymentScripts', 'GraphChangeTracking')]"
+            "dependsOn": "[resourceId('Microsoft.Resources/deploymentScripts', 'ApplicationScript')]"
           }
         }
-  ],
-  "outputs": {
-    "result": {
-      "value": "[reference('GraphChangeTracking').outputs.text]",
-      "type": "string"
-    }
-  }
+  ]
 }

@@ -31,5 +31,5 @@ Write-Host "Done"
 Write-Host "Retrieving Service Principal with Application ID {$AppToGet}..." -NoNewline
 $application = Get-MgServicePrincipal -All:$true -Filter "AppID eq '$AppToGet'"
 $DeploymentScriptOutputs = @{}
-$DeploymentScriptOutputs['text'] = $application.Id
+$DeploymentScriptOutputs['PrincipalId'] = $application.Id
 Write-Host "Done"
