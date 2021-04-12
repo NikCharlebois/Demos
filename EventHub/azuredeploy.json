@@ -16,13 +16,6 @@
         "description": "Secret for the Azure AD Application to authenticate with."
       }
     },
-    "GraphChangeTrackingPrincipalId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "ID of the Microsoft Graph Change Tracking Service Principal."
-      }
-    },
     "EventHubNamespace": {
       "type": "string",
       "defaultValue": "eventhubnamespace",
@@ -106,6 +99,54 @@
             }
         },
         {
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "GraphChangeTracking",
+          "location": "[resourceGroup().location]",
+          "kind": "AzurePowerShell",
+          "properties": {
+            "forceUpdateTag": "1",
+            "azPowerShellVersion": "3.0",
+            "environmentVariables": [],
+            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -AppToGet', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId, '0bf30f3b-4a52-48df-9a82-234910c4a086')]",
+            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/GetServicePrincipalId.ps1",
+            "timeout": "PT30M",
+            "cleanupPreference": "OnSuccess",
+            "retentionInterval": "P1D",
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
+            "outputs": {
+              "result": {
+                "value": "[reference('GraphChangeTracking').outputs.PrincipalId]",
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "ApplicationScript",
+          "location": "[resourceGroup().location]",
+          "kind": "AzurePowerShell",
+          "properties": {
+            "forceUpdateTag": "1",
+            "azPowerShellVersion": "3.0",
+            "environmentVariables": [],
+            "arguments": "[format(' -AppID {0} -AppSecret {1} -TenantId {2} -AppToGet', parameters('ApplicationId'), parameters('ApplicationSecret'), subscription().tenantId, parameters('ApplicationId'))]",
+            "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/GetServicePrincipalId.ps1",
+            "timeout": "PT30M",
+            "cleanupPreference": "OnSuccess",
+            "retentionInterval": "P1D",
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
+            "outputs": {
+              "result": {
+                "value": "[reference('ApplicationScript').outputs.PrincipalId]",
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2020-04-01-preview",
             "name": "[variables('KeyVaultName')]",
@@ -119,7 +160,18 @@
                 "accessPolicies": [
                     {
                         "tenantId": "[subscription().tenantId]",
-                        "objectId": "[parameters('GraphChangeTrackingPrincipalId')]",
+                        "objectId": "[reference('GraphChangeTracking').outputs.PrincipalId]",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get"
+                            ],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "[subscription().tenantId]",
+                        "objectId": "[reference('ApplicationScript').outputs.PrincipalId]",
                         "permissions": {
                             "keys": [],
                             "secrets": [

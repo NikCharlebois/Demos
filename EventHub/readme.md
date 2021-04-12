@@ -6,8 +6,9 @@ Deploys and Event Hub, Storage Account and KeyVault in Azure and configures it t
 
   Represents the Application ID of the Azure AD Application to use when authenticating. This application needs to have the following App Only permisions granted:
 
+  * Application.Read.All (To obtain the Service Principal of the provided Azure AD App)
   * Directory.Read.All
-  * Users.ReadWrite.All
+  * Users.ReadWrite.All (To be able to register for change notifications)
 
 * ApplicationSecret
 
