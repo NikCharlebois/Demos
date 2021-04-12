@@ -113,13 +113,7 @@
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
-            "outputs": {
-              "result": {
-                "value": "[reference('GraphChangeTracking').outputs.PrincipalId]",
-                "type": "string"
-              }
-            }
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
           }
         },
         {
@@ -137,13 +131,7 @@
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
-            "outputs": {
-              "result": {
-                "value": "[reference('ApplicationScript').outputs.PrincipalId]",
-                "type": "string"
-              }
-            }
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
           }
         },
         {
