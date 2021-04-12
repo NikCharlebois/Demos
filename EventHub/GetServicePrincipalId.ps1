@@ -25,4 +25,5 @@ Connect-MgGraph -AccessToken $AccessToken | Out-Null
 
 $application = Get-MgServicePrincipal -All:$true -Filter "AppID eq '$AppToGet'"
 $DeploymentScriptOutputs = @{}
+$DeploymentScriptOutputs["Source"] = $AppToGet
 $DeploymentScriptOutputs['PrincipalId'] = $application.Id
