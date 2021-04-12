@@ -176,7 +176,11 @@
                 "softDeleteRetentionInDays": 90,
                 "enableRbacAuthorization": false,
                 "vaultUri": "[concat('https://', variables('KeyVaultName'), '.vault.azure.net/')]",
-                "provisioningState": "Succeeded"
+                "provisioningState": "Succeeded",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Resources/deploymentScripts', 'ApplicationScript')]",
+                  "[resourceId('Microsoft.Resources/deploymentScripts', 'GraphChangeTracking')]"
+                ]
             }
         },
         {

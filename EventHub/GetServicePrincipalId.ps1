@@ -28,8 +28,8 @@ Write-Host "Connecting to Microsoft Graph..." -NoNewline
 Connect-MgGraph -AccessToken $AccessToken | Out-Null
 Write-Host "Done"
 
-Write-Host "Retrieving Application with ID {$AppToGet}..." -NoNewline
-$application = Get-MgApplication -All:$true -Filter "AppID eq '$AppToGet'"
+Write-Host "Retrieving Service Principal with Application ID {$AppToGet}..." -NoNewline
+$application = Get-MgServicePrincipal -All:$true -Filter "AppID eq '$AppToGet'"
 $DeploymentScriptOutputs = @{}
 $DeploymentScriptOutputs['PrincipalId'] = $application.Id
 Write-Host "Done"
