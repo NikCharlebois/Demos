@@ -1,7 +1,9 @@
 param(
     [string] [Parameter(Mandatory=$true)] $AppId,
     [string] [Parameter(Mandatory=$true)] $TenantId,
-    [string] [Parameter(Mandatory=$true)] $EventHubUrl
+    [string] [Parameter(Mandatory=$true)] $EventHubUrl,
+    [string] [Parameter(Mandatory=$true)] $Resource,
+    [string] [Parameter(Mandatory=$true)] $ChangeType
 )
 
 Install-Module Microsoft.Graph.Authentication -Force
@@ -28,9 +30,8 @@ Connect-MgGraph -AccessToken $AccessToken | Out-Null
 Write-Host "Done"
 
 Write-Host "Creating new Subscription..." -NoNewline
-New-MgSubscription -ChangeType "updated,deleted" `
+New-MgSubscription -ChangeType $ChangeType `
                    -NotificationUrl $EventHubUrl `
-                   -Resource 'users' `
-                   -ClientState "SecretClientState" `
+                   -Resource $Resource `
                    -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(60))
 Write-Host "Done"

@@ -29,6 +29,20 @@
       "metadata": {
         "description": "Name of the Event Hub."
       }
+    },
+    "Resource": {
+      "type": "string",
+      "defaultValue": "users",
+      "metadata": {
+        "description": "Resources to register subscriptions for."
+      }
+    },
+    "ChangeType": {
+      "type": "string",
+      "defaultValue": "updated,deleted",
+      "metadata": {
+        "description": "Type of events to register subscriptions for."
+      }
     }
   },
   "variables": {
@@ -229,7 +243,7 @@
                 "secureValue": "[parameters('ApplicationSecret')]"
               }
             ],
-            "arguments": "[format(' -AppID {0} -TenantId {1} -EventHubUrl {2}', parameters('ApplicationId'), subscription().tenantId, concat('EventHub:https://', parameters('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid))]",
+            "arguments": "[format(' -AppID {0} -TenantId {1} -EventHubUrl {2} -Resource {3} -ChangeType {4}', parameters('ApplicationId'), subscription().tenantId, concat('EventHub:https://', parameters('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid), parameters('Resource'), parameters('ChangeType'))]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
