@@ -17,7 +17,7 @@ $body = @{
     client_info = 1
     client_id = $AppId
 }
-
+Start-Sleep 30
 Write-Host "Requesting Access Token for Microsoft Graph..." -NoNewline
 $OAuthReq = Invoke-RestMethod -Uri $url -Method Post -Body $body
 $AccessToken = $OAuthReq.access_token
@@ -30,7 +30,7 @@ Write-Host "Done"
 Write-Host "Creating new Subscription..." -NoNewline
 New-MgSubscription -ChangeType "updated,deleted" `
                    -NotificationUrl $EventHubUrl `
-                   -Resource 'groups' `
+                   -Resource 'users' `
                    -ClientState "SecretClientState" `
                    -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(60))
 Write-Host "Done"
