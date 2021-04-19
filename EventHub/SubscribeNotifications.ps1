@@ -28,7 +28,7 @@ Connect-MgGraph -AccessToken $AccessToken | Out-Null
 Write-Host "Done"
 
 Write-Host "Creating new Subscription..." -NoNewline
-New-MgSubscription -ChangeType "created" `
+New-MgSubscription -ChangeType "updated,deleted" `
                    -NotificationUrl $EventHubUrl `
                    -Resource 'users' `
                    -ClientState 'secretClientValue' `
