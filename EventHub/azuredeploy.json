@@ -16,20 +16,6 @@
         "description": "Secret for the Azure AD Application to authenticate with."
       }
     },
-    "EventHubNamespace": {
-      "type": "string",
-      "defaultValue": "eventhubnamespace",
-      "metadata": {
-        "description": "Namespace for the Event Hub."
-      }
-    },
-    "EventHubName": {
-      "type": "string",
-      "defaultValue": "graphchangenotifications",
-      "metadata": {
-        "description": "Name of the Event Hub."
-      }
-    },
     "Resource": {
       "type": "string",
       "defaultValue": "users",
@@ -46,13 +32,15 @@
     }
   },
   "variables": {
-    "KeyVaultName": "[concat(parameters('EventHubNamespace'), 'Vault')]"
+    "EventHubNamespace": "[uniqueString( resourceGroup().id, deployment().name )]",
+    "EventHubName": "graphchangenotifications",
+    "KeyVaultName": "[concat(variables('EventHubNamespace'), 'Vault')]"
   },
   "resources": [
     {
             "type": "Microsoft.EventHub/namespaces",
             "apiVersion": "2018-01-01-preview",
-            "name": "[parameters('EventHubNamespace')]",
+            "name": "[variables('EventHubNamespace')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Basic",
@@ -69,10 +57,10 @@
         {
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "apiVersion": "2017-04-01",
-            "name": "[concat(parameters('EventHubNamespace'), '/RootManageSharedAccessKey')]",
+            "name": "[concat(variables('EventHubNamespace'), '/RootManageSharedAccessKey')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('EventHubNamespace'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('EventHubNamespace'))]"
             ],
             "properties": {
                 "rights": [
@@ -85,10 +73,10 @@
         {
             "type": "Microsoft.EventHub/namespaces/eventhubs",
             "apiVersion": "2017-04-01",
-            "name": "[concat(parameters('EventHubNamespace'), '/', parameters('EventHubName'))]",
+            "name": "[concat(variables('EventHubNamespace'), '/', variables('EventHubName'))]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('EventHubNamespace'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('EventHubNamespace'))]"
             ],
             "properties": {
                 "messageRetentionInDays": 1,
@@ -99,11 +87,11 @@
         {
             "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
             "apiVersion": "2017-04-01",
-            "name": "[concat(parameters('EventHubNamespace'), '/', parameters('EventHubName'), '/AllowSendListen')]",
+            "name": "[concat(variables('EventHubNamespace'), '/', variables('EventHubName'), '/AllowSendListen')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('EventHubNamespace'))]"
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]",
+                "[resourceId('Microsoft.EventHub/namespaces', variables('EventHubNamespace'))]"
             ],
             "properties": {
                 "rights": [
@@ -133,7 +121,7 @@
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
             "dependsOn": [
-              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
+              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]"
             ]
           }
         },
@@ -158,7 +146,7 @@
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
             "dependsOn": [
-              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]",
+              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]",
               "[resourceId('Microsoft.Resources/deploymentScript', 'GraphChangeTracking')]"
             ]
           }
@@ -225,7 +213,7 @@
                     "enabled": true
                 },
                 "contentType": "text/plaintext",
-                "value": "[listkeys(resourceId('Microsoft.Eventhub/namespaces/eventhubs/authorizationRules', parameters('EventHubNamespace'), parameters('EventHubName'), 'AllowSendListen'),'2017-04-01').primaryConnectionString]"
+                "value": "[listkeys(resourceId('Microsoft.Eventhub/namespaces/eventhubs/authorizationRules', variables('EventHubNamespace'), variables('EventHubName'), 'AllowSendListen'),'2017-04-01').primaryConnectionString]"
             }
         },
         {
@@ -243,12 +231,12 @@
                 "secureValue": "[parameters('ApplicationSecret')]"
               }
             ],
-            "arguments": "[format(' -AppID {0} -TenantId {1} -EventHubUrl {2} -Resource {3} -ChangeType {4}', parameters('ApplicationId'), subscription().tenantId, concat('EventHub:https://', parameters('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid), parameters('Resource'), parameters('ChangeType'))]",
+            "arguments": "[format(' -AppID {0} -TenantId {1} -EventHubUrl {2} -Resource {3} -ChangeType {4}', parameters('ApplicationId'), subscription().tenantId, concat('EventHub:https://', variables('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid), parameters('Resource'), parameters('ChangeType'))]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('EventHubNamespace'), parameters('EventHubName'))]"
+            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]"
           }
         }
   ]
