@@ -31,5 +31,6 @@ Write-Host "Creating new Subscription..." -NoNewline
 New-MgSubscription -ChangeType "updated,deleted" `
                    -NotificationUrl $EventHubUrl `
                    -Resource 'groups' `
+                   -ClientState "SecretClientState" `
                    -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(60))
 Write-Host "Done"
