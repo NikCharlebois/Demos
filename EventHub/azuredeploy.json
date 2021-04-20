@@ -76,7 +76,7 @@
             "name": "[concat(variables('EventHubNamespace'), '/', variables('EventHubName'))]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces/AuthorizationRules', variables('EventHubNamespace'), variables('EventHubNamespace'))]"
+                "[resourceId('Microsoft.EventHub/namespaces/AuthorizationRules', variables('EventHubNamespace'), 'RootManageSharedAccessKey')]"
             ],
             "properties": {
                 "messageRetentionInDays": 1,
