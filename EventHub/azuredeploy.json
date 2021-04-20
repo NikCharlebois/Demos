@@ -224,7 +224,7 @@
           "kind": "AzurePowerShell",
           "properties": {
             "forceUpdateTag": "1",
-            "azPowerShellVersion": "3.0",            
+            "azPowerShellVersion": "3.0",
             "environmentVariables": [
               {
                 "name":"AppSecret",
@@ -236,7 +236,11 @@
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
-            "dependsOn": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]"
+            "dependsOn": [
+              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]",
+              "[resourceId('Microsoft.KeyVault/vaults', variables('KeyVaultName'))]",
+              "[resourceId('Microsoft.KeyVault/vaults/secrets',variables('KeyVaultName'), 'ConnectionString')]"
+            ]
           }
         }
   ]

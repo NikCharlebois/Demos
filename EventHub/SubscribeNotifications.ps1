@@ -25,7 +25,7 @@ $AccessToken = $OAuthReq.access_token
 Write-Host "Done"
 
 Write-Host "Connecting to Microsoft Graph..." -NoNewline
-Connect-MgGraph -AccessToken $AccessToken
+Connect-MgGraph -AccessToken $AccessToken | Out-String
 Write-Host "Done"
 
 Write-Host "Creating new Subscription..." -NoNewline
@@ -37,12 +37,10 @@ try
         Resource = $Resource
         ExpirationDateTime = (([System.DateTime]::UtcNow).AddMinutes(60))
     }
-    Write-Host $($values | Out-String)
-    Start-Sleep 120
-    New-MgSubscription @values
+    New-MgSubscription @values | Out-String
+    Write-Host "Done"
 }
 catch
 {
     Write-Host $_
 }
-Write-Host "Done"
