@@ -76,7 +76,7 @@
             "name": "[concat(variables('EventHubNamespace'), '/', variables('EventHubName'))]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('EventHubNamespace'))]"
+                "[resourceId('Microsoft.EventHub/namespaces/AuthorizationRules', variables('EventHubNamespace'), variables('EventHubNamespace'))]"
             ],
             "properties": {
                 "messageRetentionInDays": 1,
@@ -91,7 +91,6 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]",
-                "[resourceId('Microsoft.EventHub/namespaces', variables('EventHubNamespace'))]"
             ],
             "properties": {
                 "rights": [
@@ -146,7 +145,6 @@
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
             "dependsOn": [
-              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]",
               "[resourceId('Microsoft.Resources/deploymentScript', 'GraphChangeTracking')]"
             ]
           }
@@ -237,8 +235,6 @@
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D",
             "dependsOn": [
-              "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('EventHubNamespace'), variables('EventHubName'))]",
-              "[resourceId('Microsoft.KeyVault/vaults', variables('KeyVaultName'))]",
               "[resourceId('Microsoft.KeyVault/vaults/secrets',variables('KeyVaultName'), 'ConnectionString')]"
             ]
           }
