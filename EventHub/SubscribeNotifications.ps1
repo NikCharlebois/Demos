@@ -29,8 +29,5 @@ Connect-MgGraph -AccessToken $AccessToken | Out-Null
 Write-Host "Done"
 
 Write-Host "Creating new Subscription..." -NoNewline
-New-MgSubscription -ChangeType $ChangeType `
-                   -NotificationUrl $EventHubUrl `
-                   -Resource $Resource `
-                   -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(60)) -verbose
+New-MgSubscription -ChangeType $ChangeType -NotificationUrl $EventHubUrl -Resource $Resource -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(60)) -verbose
 Write-Host "Done"
