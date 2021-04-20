@@ -31,11 +31,14 @@ Write-Host "Done"
 Write-Host "Creating new Subscription..." -NoNewline
 try
 {
-    New-MgSubscription -ChangeType $ChangeType `
-                       -NotificationUrl $EventHubUrl `
-                       -Resource $Resource `
-                       -ExpirationDateTime (([System.DateTime]::UtcNow).AddMinutes(60)) `
-                       -ErrorAction Stop
+    $values = @{
+        ChangeType = $ChangeType
+        NotificationUrl = $EventHubUrl
+        Resource = $Resource
+        ExpirationDateTime = (([System.DateTime]::UtcNow).AddMinutes(60))
+    }
+    Write-Host $($values | Out-String)
+    New-MgSubscription @values
 }
 catch
 {
