@@ -25,7 +25,7 @@ $AccessToken = $OAuthReq.access_token
 Write-Host "Done"
 
 Write-Host "Connecting to Microsoft Graph..." -NoNewline
-Connect-MgGraph -AccessToken $AccessToken | Out-Null
+Connect-MgGraph -AccessToken $AccessToken
 Write-Host "Done"
 
 Write-Host "Creating new Subscription..." -NoNewline
