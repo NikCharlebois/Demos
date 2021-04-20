@@ -1,4 +1,5 @@
-Deploys an Event Hub, Storage Account and KeyVault in Azure and configures it to receive Graph change tracking notifications.
+Deploys an Event Hub, Storage Account and KeyVault in Azure and configures it to receive Graph change tracking notifications. You can specify what endpoint and types of events you wish to subscrive to. An easy way for you to monitor the events is to use the following community VSCode extension and start monitoring your Event Hub for new events coming in:
+https://marketplace.visualstudio.com/items?itemName=Summer.azure-event-hub-explorer
 
 **Parameters**
 
