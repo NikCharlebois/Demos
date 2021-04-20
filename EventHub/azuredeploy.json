@@ -25,7 +25,7 @@
     },
     "ChangeType": {
       "type": "string",
-      "defaultValue": "updated,deleted",
+      "defaultValue": "updated",
       "metadata": {
         "description": "Type of events to register subscriptions for."
       }
