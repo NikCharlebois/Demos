@@ -28,6 +28,8 @@ Write-Host "Connecting to Microsoft Graph..." -NoNewline
 Connect-MgGraph -AccessToken $AccessToken | Out-String
 Write-Host "Done"
 
+Start-Sleep 150
+
 Write-Host "Creating new Subscription..." -NoNewline
 try
 {
