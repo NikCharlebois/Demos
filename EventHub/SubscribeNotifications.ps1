@@ -38,6 +38,7 @@ try
         ExpirationDateTime = (([System.DateTime]::UtcNow).AddMinutes(60))
     }
     Write-Host $($values | Out-String)
+    Start-Sleep 120
     New-MgSubscription @values
 }
 catch

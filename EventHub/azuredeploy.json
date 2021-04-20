@@ -32,7 +32,7 @@
     }
   },
   "variables": {
-    "EventHubNamespace": "[uniqueString( resourceGroup().id, deployment().name )]",
+    "EventHubNamespace": "[concat('hub',uniqueString( resourceGroup().id, deployment().name ))]",
     "EventHubName": "graphchangenotifications",
     "KeyVaultName": "[concat(variables('EventHubNamespace'), 'Vault')]"
   },
