@@ -6,10 +6,10 @@ param(
     [string] [Parameter(Mandatory=$true)] $ChangeType
 )
 
-Install-Module Microsoft.Graph.Authentication -Force
-Import-Module Microsoft.Graph.Authentication -Force
-Install-Module Microsoft.Graph.ChangeNotifications -Force
-Import-Module Microsoft.Graph.ChangeNotifications -Force
+Install-Module Microsoft.Graph.Authentication -Force | Out-Null
+Import-Module Microsoft.Graph.Authentication -Force | Out-Null
+Install-Module Microsoft.Graph.ChangeNotifications -Force | Out-Null
+Import-Module Microsoft.Graph.ChangeNotifications -Force | Out-Null
 
 $url = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
 $body = @{
@@ -25,7 +25,7 @@ $AccessToken = $OAuthReq.access_token
 Write-Host "Done"
 
 Write-Host "Connecting to Microsoft Graph..." -NoNewline
-Connect-MgGraph -AccessToken $AccessToken
+Connect-MgGraph -AccessToken $AccessToken | Out-Null
 Write-Host "Done"
 
 Write-Host "Creating new Subscription..." -NoNewline
