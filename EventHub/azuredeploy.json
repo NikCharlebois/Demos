@@ -29,13 +29,6 @@
       "metadata": {
         "description": "Type of events to register subscriptions for."
       }
-    },
-    "EncryptionCertificateId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Id of the encryption certificate to use."
-      }
     }
   },
   "variables": {
@@ -236,7 +229,7 @@
                 "secureValue": "[parameters('ApplicationSecret')]"
               }
             ],
-            "arguments": "[format(' -AppID ''{0}'' -TenantId ''{1}'' -EventHubUrl ''{2}'' -Resource ''{3}'' -ChangeType ''{4}'' -EncryptionCertificateId ''{5}''', parameters('ApplicationId'), subscription().tenantId, concat('EventHub:https://', variables('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid), parameters('Resource'), parameters('ChangeType'), parameters('EncryptionCertificateId'))]",
+            "arguments": "[format(' -AppID ''{0}'' -TenantId ''{1}'' -EventHubUrl ''{2}'' -Resource ''{3}'' -ChangeType ''{4}''', parameters('ApplicationId'), subscription().tenantId, concat('EventHub:https://', variables('EventHubNamespace'), 'Vault.vault.azure.net/secrets/ConnectionString?tenantId=', subscription().tenantid), parameters('Resource'), parameters('ChangeType'))]",
             "primaryScriptUri": "https://raw.githubusercontent.com/nikcharlebois/demos/main/EventHub/SubscribeNotifications.ps1",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",

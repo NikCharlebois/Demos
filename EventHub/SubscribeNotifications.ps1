@@ -3,8 +3,7 @@ param(
     [string] [Parameter(Mandatory=$true)] $TenantId,
     [string] [Parameter(Mandatory=$true)] $EventHubUrl,
     [string] [Parameter(Mandatory=$true)] $Resource,
-    [string] [Parameter(Mandatory=$true)] $ChangeType,
-    [string] [Parameter(Mandatory=$true)] $EncryptionCertificateId
+    [string] [Parameter(Mandatory=$true)] $ChangeType
 )
 
 Install-Module Microsoft.Graph.Authentication -Force | Out-Null
@@ -38,12 +37,7 @@ try
         ChangeType = $ChangeType
         NotificationUrl = $EventHubUrl
         Resource = $Resource
-        IncludeResourceData = $true
         ExpirationDateTime = (([System.DateTime]::UtcNow).AddMinutes(60))
-    }
-    if (-not [System.String]::IsNullOrEmpty($EncryptionCertificateId) -or $EncryptionCertificateId -ne '[]')
-    {
-        $values.Add("EncryptionCertificateId", $EncryptionCertificateId)
     }
     New-MgSubscription @values | Out-String
     Write-Host "Done"
